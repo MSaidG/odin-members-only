@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOME PAGE</title>
+</head>
+<body>
+  
+
+
+  <% if (locals.user) { %>
+    <div>
+      <h1>Hello, <%= locals.user.username %>!</h1>
+      <a href="/logout">Log Out</a>
+    </div>
+  <% } else {%>
+    <nav>
+      <a href="/signup">Sign Up</a>
+      <a href="/login">Log In</a>
+    </nav>
+  <%  }%>
+
+  <div>
+    <h1>Messages</h1>
+    <ul>
+      <% messages.forEach(message => { %>
+        <li><% message.title %></li>
+      <% }) %>
+    </ul>
+  </div>
+
+</body>
+</html>
