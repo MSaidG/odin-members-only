@@ -9,6 +9,13 @@ li {
   padding: 10px;
   margin: 10px;
   border-radius: 5px;
+  background-color: lightgray;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 90vw;
 }
 
 form {
