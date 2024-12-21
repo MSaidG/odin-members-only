@@ -59,21 +59,21 @@ router.post("/signup/password", async (req, res, next) => {
   let { first_name, last_name, username, email, password } = req.body;
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
+      console.log(err);
       return next(err);
     }
-    password = hash;
+    password= hash;
+    const client = await pool.connect();
+    try {
+      await client.query(
+        "INSERT INTO member (first_name, last_name, username, email, password, status) VALUES ($1, $2, $3, $4, $5, $6)",
+        [first_name, last_name, username, email, password, "basic"]
+      );
+      res.redirect("/");
+    } catch (err) {
+      return next(err);
+    }
   });
-
-  const client = await pool.connect();
-  try {
-    await client.query(
-      "INSERT INTO member (first_name, last_name, username, email, password) VALUES ($1, $2, $3, $4, $5)",
-      [first_name, last_name, username, email, password]
-    );
-    res.redirect("/");
-  } catch (err) {
-    return next(err);
-  }
 });
 
 router.post(
@@ -81,7 +81,6 @@ router.post(
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login",
-    failureFlash: true,
   })
 );
 

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Message</title>
+</head>
+<body>
+  <% if (locals.user) { %>
+  <h1>New Message</h1>
+  <form action="/new-message" method="post">
+      <section>
+          <label for="title">Title</label>
+          <input id="title" name="title" type="text" autocomplete="title" required>
+      </section>
+      <section>
+          <label for="text">Text</label>
+          <input id="text" name="text" type="text" autocomplete="text" required>
+      </section>
+      <button type="submit">Submit</button>
+  </form>
+  <% } else {%>
+    <nav>
+      <a href="/signup">Sign Up</a>
+      <a href="/login">Log In</a>
+    </nav>
+    <h1>Log In To Create A New Message</h1>
+  <% } %>
+</body>
+</html>

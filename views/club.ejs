@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Club</title>
+</head>
+<body>
+  <% if (locals.user) { %>
+    <% if (user.status !== "basic(restricted)") { %>
+    <h1>Club</h1>
+    <p>Welcome, <%= locals.user.username %>!</p>
+    <p>To become a club member or gain admin access please enter the secret passcode</p>
+    <form action="/club/password" method="post">
+        <section>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="new-password" required>
+        </section>
+        <button type="submit">Submit</button>
+    </form>
+    <% } else if (locals.user && locals.user.status === "basic(restricted)") {%>
+      <nav>
+        <a href="/">Home Page</a>
+        <a href="/new-message">New Message</a>
+        <a href="/logout">Log Out</a>
+      </nav>
+      <h1>Your account is restricted to further access</h1>
+      <p>Only Unrestricted users can see this page</p>
+  <% } } else {%>
+    <nav>
+      <a href="/signup">Sign Up</a>
+      <a href="/login">Log In</a>
+    </nav>
+    <h1>Log In To See The Club</h1>
+  <% } %>
+</body>
+</html>

@@ -4,31 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HOME PAGE</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  
-
-
   <% if (locals.user) { %>
     <div>
       <h1>Hello, <%= locals.user.username %>!</h1>
       <a href="/logout">Log Out</a>
+      <a href="/new-message">New Message</a>
+      <a href="/club">Club</a>
     </div>
-  <% } else {%>
-    <nav>
-      <a href="/signup">Sign Up</a>
-      <a href="/login">Log In</a>
-    </nav>
-  <%  }%>
+    <% } else {%>
+      <nav>
+        <a href="/signup">Sign Up</a>
+        <a href="/login">Log In</a>
+      </nav>
+    <%  }%>
+    <div class="messages">
+      <h1>Messages</h1>
+      <ul>
+        <% messages.forEach(message => { %>
+          <li>
+            <div class="message">
+              <h3><%= message.title %></h3>
+              <p><%= message.text %></p>
+              <% if (locals.user) { %>
+                <% if (locals.user.status === "club_member" || locals.user.status === "admin") { %>
+                  <li><%= message.time %></li>
+                  <li><%= message.author %></li>
+                <% } %>
+                <% if (locals.user.status === "admin") { %>
+                  <button data-id="<%= message.id %>">Delete</button>
+                <% } %>
+              <% } %>
+            </div>
+          </li>
+          <% }); %>
+      </ul>
+    </div>
 
-  <div>
-    <h1>Messages</h1>
-    <ul>
-      <% messages.forEach(message => { %>
-        <li><% message.title %></li>
-      <% }) %>
-    </ul>
-  </div>
+
+
 
 </body>
 </html>
