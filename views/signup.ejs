@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Sign Up</h1>
@@ -14,7 +15,7 @@
       <% }); %>
   
   <% } %>
-  <form action="/signup/password" method="post">
+  <form action="/signup" method="post">
       <section>
           <label for="first_name">First Name</label>
           <input id="first_name" name="first_name" type="text" autocomplete="given_name" value="<%= locals.first_name %>" required>

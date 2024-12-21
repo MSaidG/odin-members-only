@@ -151,7 +151,7 @@ const signupPost = [
   }
 ]
 
-router.post("/signup/password", signupPost);
+router.post("/signup", signupPost);
 
 router.post(
   "/login/password",

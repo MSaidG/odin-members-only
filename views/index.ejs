@@ -9,22 +9,25 @@
 <body>
   <% if (locals.user) { %>
     <div>
-      <h1>Hello, <%= locals.user.username %>!</h1>
-      <a href="/logout">Log Out</a>
-      <a href="/new-message">New Message</a>
-      <a href="/club">Club</a>
+      <nav>
+        <a href="/logout">Log Out</a>
+        <a href="/new-message">New Message</a>
+        <a href="/club">Club</a>
+      </nav>
+      
+      <h2 class="welcome">Hello, <%= locals.user.username %>!</h2>
     </div>
     <% } else {%>
       <nav>
+        <a href="/">Home Page</a>
         <a href="/signup">Sign Up</a>
         <a href="/login">Log In</a>
       </nav>
     <%  }%>
     <div class="messages">
-      <h1>Messages</h1>
+      <h1 class="message-header">Messages</h1>
       <ul>
         <% messages.forEach(message => { %>
-          <p>
             <div class="message">
               <h3><%= message.title %></h3>
               <p><%= message.text %></p>
@@ -34,16 +37,47 @@
                   <p><%= message.author %></p>
                 <% } %>
                 <% if (locals.user.status === "admin") { %>
-                  <button data-id="<%= message.id %>">Delete</button>
+                  <button class="delete" data-id="<%= message.id %>">Delete</button>
                 <% } %>
               <% } %>
             </div>
           </li>
           <% }); %>
-      </ul>
-    </div>
-
-
+        </ul>
+      </div>
+      
+      <script> 
+        const deleteButtons = document.querySelectorAll('.delete');
+        
+        deleteButtons.forEach(button => {
+          button.addEventListener('click', async () => {
+          const id = button.getAttribute('data-id');
+          button.parentNode.remove();
+          await fetch(`/delete-message`, {
+            method: 'DELETE',
+            body: JSON.stringify({id: id}),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then((response) => {
+            if (!response.ok) {
+              console.error(response.statusText)
+            }
+            return response
+          })
+          .then((response) => {
+            return response.json()
+          }).then(function(json) {
+              console.log(json);
+          })
+          .catch((e) => dispatch(
+            console.error(e)
+          ));
+          location.reload();
+        });
+      });
+    </script>
 
 
 </body>

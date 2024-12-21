@@ -3,12 +3,12 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db/pool");
 
+
 router.get("/", async (req, res) => {
   let messages = await pool.query("SELECT title, text FROM message");
-  console.log(req.user);
   if (req.user) {
     if (req.user.status === "admin" || req.user.status === "club_member") {
-      messages = await pool.query("SELECT message.title, message.text, message.time, member.username AS author FROM message JOIN member ON message.author_id = member.id");  
+      messages = await pool.query("SELECT message.id, message.title, message.text, message.time, member.username AS author FROM message JOIN member ON message.author_id = member.id");  
     }
   }
   res.render("index", {
@@ -76,6 +76,12 @@ router.post("/club/password", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+router.delete("/delete-message", async (req, res) => {
+  const { id } = req.body;
+  await pool.query("DELETE FROM message WHERE id = $1", [id]);
+  res.redirect("/");
 });
 
 module.exports = router;

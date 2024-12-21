@@ -4,20 +4,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Club</title>
+  <link rel="stylesheet" href="styles.css">
+
 </head>
 <body>
   <% if (locals.user) { %>
     <% if (user.status !== "basic(restricted)") { %>
-    <h1>Club</h1>
-    <p>Welcome, <%= locals.user.username %>!</p>
-    <p>To become a club member or gain admin access please enter the secret passcode</p>
-    <form action="/club/password" method="post">
-        <section>
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" autocomplete="new-password" required>
-        </section>
-        <button type="submit">Submit</button>
-    </form>
+      <% if (locals.user.status === "admin") {%>
+        <nav>
+          <a href="/">Home Page</a>
+          <a href="/new-message">New Message</a>
+          <a href="/logout">Log Out</a>
+        </nav>
+        <h1>You are an admin</h1>
+        <p>You can delete, create and see messages and their author and time</p>
+      <% } else if (locals.user.status === "club_member") { %>
+        <nav>
+          <a href="/">Home Page</a>
+          <a href="/new-message">New Message</a>
+          <a href="/logout">Log Out</a>
+        </nav>
+        <h1>You are a club member</h1>
+        <p>You can create and see messages and their author and time</p>
+      <% } else { %>
+        <h1>Club</h1>
+        <p>Welcome, <%= locals.user.username %>!</p>
+        <p>To become a club member or gain admin access please enter the secret passcode</p>
+        <form action="/club/password" method="post">
+            <section>
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" autocomplete="new-password" required>
+            </section>
+            <button type="submit">Submit</button>
+        </form>
+      <% } %>
     <% } else if (locals.user && locals.user.status === "basic(restricted)") {%>
       <nav>
         <a href="/">Home Page</a>
